@@ -26,7 +26,7 @@ best <- function(state, outcome) {
     stop("invalid outcome")
   }
   
-  ## Return hospital name in that state with lowest 30-day death
+  ## Return hospital name in that state with lowest 30-day death rate
   
   #Remove all rows where is no value in the column
   index_column = possible_columns[match(outcome,possible_outcomes)]
@@ -51,17 +51,12 @@ best <- function(state, outcome) {
     data <- data[order(data[,"Hospital.Name"]),]
   }
   
-  return(data[1,"Hospital.Name"])
-  
-#data <- subset(data, column == min(data[,column]))
-
-  
-  ##rate
+  print(data[1,"Hospital.Name"])
 }
 
-print(best("TX", "heart attack")) # [1] "CYPRESS FAIRBANKS MEDICAL CENTER"
-print(best("TX", "heart failure")) # [1] "FORT DUNCAN MEDICAL CENTER"
-print(best("MD", "heart attack")) # [1] "JOHNS HOPKINS HOSPITAL, THE"
-print(best("MD", "pneumonia")) # [1] "GREATER BALTIMORE MEDICAL CENTER"
-print(best("BB", "heart attack")) # Error in best("BB", "heart attack") : invalid state
-print(best("NY", "hert attack")) # Error in best("NY", "hert attack") : invalid outcome
+best("TX", "heart attack") # [1] "CYPRESS FAIRBANKS MEDICAL CENTER"
+best("TX", "heart failure") # [1] "FORT DUNCAN MEDICAL CENTER"
+best("MD", "heart attack") # [1] "JOHNS HOPKINS HOSPITAL, THE"
+best("MD", "pneumonia") # [1] "GREATER BALTIMORE MEDICAL CENTER"
+best("BB", "heart attack") # Error in best("BB", "heart attack") : invalid state
+best("NY", "hert attack") # Error in best("NY", "hert attack") : invalid outcome
