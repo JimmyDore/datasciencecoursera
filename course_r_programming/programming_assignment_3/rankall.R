@@ -36,17 +36,18 @@ rankall <- function(outcome, num = "best") {
   
   data <- data[order(data[,column],data[,"Hospital.Name"]),]
 
-  for (state in sort(unique(data$State))){
+  f_test <- function (state){
     data_temp <- subset(data,State == state)
     if (num == "best"){
-      print(c(data_temp[1,"Hospital.Name"],state))
+      return(c(data_temp[1,"Hospital.Name"],state))
     }else if(num == "worst"){
-      print(c(data_temp[nrow(data_temp),"Hospital.Name"],state))
+      return(c(data_temp[nrow(data_temp),"Hospital.Name"],state))
     }else{
-      print(c(data_temp[num, "Hospital.Name"],state))
+      return(c(data_temp[num, "Hospital.Name"],state))
     }
   }
-  print(dataframe_states)
+  result <- sapply(sort(unique(data$State)),f_test)
+  return(data.frame(result[1,],result[2,]))
 }
 
 print(head(rankall("heart attack", 20), 10))
