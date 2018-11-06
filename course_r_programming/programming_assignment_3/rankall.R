@@ -12,8 +12,41 @@
 
 rankall <- function(outcome, num = "best") {
   ## Read outcome data
-  ## Check that state and outcome are valid
-  ## For each state, find the hospital of the given rank
-  ## Return a data frame with the hospital names and the
-  ## (abbreviated) state name
+  setwd("/home/jimmydore/Documents/Coursera/Repo_Github/datasciencecoursera/course_r_programming/programming_assignment_3")
+  data <- read.csv("outcome-of-care-measures.csv", colClasses = "character")
+  ## Check that state (not state actually) and outcome are valid
+  
+  possible_outcomes = c("heart attack","heart failure","pneumonia")
+  possible_columns = c("Heart.Attack","Heart.Failure","Pneumonia")
+  if (!(is.element(outcome,possible_outcomes))){
+    stop("invalid outcome")
+  }
+    
+  
+  #Remove all rows where is no value in the column
+  index_column = possible_columns[match(outcome,possible_outcomes)]
+  column = paste("Hospital.30.Day.Death..Mortality..Rates.from.",index_column,sep='')
+  
+  data <- data[,c(column,"Hospital.Name","State")]
+  
+  data[, column] <- as.numeric(data[, column])
+  
+  #according to the examples, we want to keep NA
+  data <- na.omit(data)
+  
+  data <- data[order(data[,column],data[,"Hospital.Name"]),]
+
+  for (state in sort(unique(data$State))){
+    data_temp <- subset(data,State == state)
+    if (num == "best"){
+      print(c(data_temp[1,"Hospital.Name"],state))
+    }else if(num == "worst"){
+      print(c(data_temp[nrow(data_temp),"Hospital.Name"],state))
+    }else{
+      print(c(data_temp[num, "Hospital.Name"],state))
+    }
+  }
+  print(dataframe_states)
 }
+
+print(head(rankall("heart attack", 20), 10))
