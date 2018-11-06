@@ -47,7 +47,10 @@ rankall <- function(outcome, num = "best") {
     }
   }
   result <- sapply(sort(unique(data$State)),f_test)
-  return(data.frame(result[1,],result[2,]))
+  result <- (data.frame(result[1,],result[2,]))
+  colnames(result) <- c("hospital", "state")
+  
+  return(result)
 }
 
 print(head(rankall("heart attack", 20), 10))
